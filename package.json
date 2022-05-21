@@ -1,0 +1,36 @@
+{
+  "name": "junit-coverage-report",
+  "version": "1.0.0",
+  "description": "Pull request comments with junit and coverage reports",
+  "main": "src/action.js",
+  "scripts": {
+    "test": "jest --coverage",
+    "build": "ncc build src/action.js -o dist"
+  },
+  "author": "Leonardo Vitor da Silva",
+  "license": "MIT",
+  "devDependencies": {
+    "@vercel/ncc": "^0.33.4",
+    "jest": "^28.1.0",
+    "prettier": "^2.6.2"
+  },
+  "dependencies": {
+    "@actions/core": "^1.8.2",
+    "@actions/github": "^5.0.3",
+    "fast-xml-parser": "^4.0.7",
+    "handlebars": "^4.7.7",
+    "proper-url-join": "^2.1.1"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "./src/**"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "lines": 85
+      }
+    },
+    "coverageDirectory": ".reports/coverage"
+  }
+}

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="96" time="13.546" timestamp="2022-05-15T21:50:52.356117" hostname="local"><testcase classname="tests.test_billing" name="test_billing_days_for_processing" time="0.126" /><testcase classname="tests.test_billing" name="test_billing_charge_period" time="0.022"><failure message="ValueError: day is out of range for month">company_service = &lt;domain.service.CompanyService object at 0x109aa56d0&gt;
+
+    def test_billing_charge_period(company_service):
+        processing_date = {
+            '2019-02-12 00:00:00': {
+                12: (_dt(2019, 1, 12), _dt(2019, 2, 11)),
+            },
+            '2019-02-28 00:00:00': {
+                28: (_dt(2019, 1, 28), _dt(2019, 2, 27)),
+            },
+            '2019-03-01 00:00:00': {
+                29: (_dt(2019, 1, 29), _dt(2019, 2, 28)),
+                30: (_dt(2019, 1, 30), _dt(2019, 2, 28)),
+                31: (_dt(2019, 1, 31), _dt(2019, 2, 28)),
+                1: (_dt(2019, 2, 1), _dt(2019, 2, 28))
+            },
+            '2020-02-29 00:00:00': {
+                29: (_dt(2020, 1, 29), _dt(2020, 2, 28)),
+            },
+            '2020-03-01 00:00:00': {
+                30: (_dt(2020, 1, 30), _dt(2020, 2, 29)),
+                31: (_dt(2020, 1, 31), _dt(2020, 2, 29)),
+                1: (_dt(2020, 2, 1), _dt(2020, 2, 29))
+            },
+            '2020-03-02 00:00:00': {
+                2: (_dt(2020, 2, 2), _dt(2020, 3, 1))
+            },
+            '2020-04-01 00:00:00': {
+                1: (_dt(2020, 3, 1), _dt(2020, 3, 31))
+            },
+            '2020-04-02 00:00:00': {
+                2: (_dt(2020, 3, 2), _dt(2020, 4, 1))
+            },
+            '2020-04-30 00:00:00': {
+                30: (_dt(2020, 3, 30), _dt(2020, 4, 29))
+            },
+            '2020-05-01 00:00:00': {
+                31: (_dt(2020, 3, 31), _dt(2020, 4, 30)),
+&gt;               1: (_dt(2020, 4, 1), _dt(2020, 4, 31))
+            },
+            '2020-05-15 00:00:00': {
+                15: (_dt(2020, 4, 15), _dt(2020, 5, 14))
+            },
+        }
+
+tests/test_billing.py:126: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+y = 2020, m = 4, d = 31
+
+    def _dt(y, m, d):
+&gt;       return datetime.date(y, m, d)
+E       ValueError: day is out of range for month
+
+tests/test_billing.py:11: ValueError</failure></testcase><testcase classname="tests.test_billing" name="test_billing_open_cycle_period" time="0.085" /><testcase classname="tests.test_billing" name="test_billing_charges" time="0.560"><failure message="AssertionError: used&#10;assert 21 == 20&#10;  +21&#10;  -20">db = &lt;sqlalchemy.orm.session.Session object at 0x109aa58e0&gt;, company_service = &lt;domain.service.CompanyService object at 0x109cd04f0&gt;, schedule_service = &lt;domain.service.ScheduleService object at 0x109aa5a30&gt;
+
+    def test_billing_charges(db, company_service, schedule_service):
+        company1 = utils.create_company(db, 60, 5)
+        company2 = utils.create_company(db, 38, 10)
+        _process_billing_charges([company1.id, company2.id], company_service, schedule_service)
+        billing1 = company_service.load_billing_charges(company1.id)
+        billing2 = company_service.load_billing_charges(company2.id)
+        expected_data = {
+            1: [
+                {'start': _dt(2020, 4, 5), 'end': _dt(2020, 5, 4), 'used': 20, 'balance': 40},
+                {'start': _dt(2020, 3, 5), 'end': _dt(2020, 4, 4), 'used': 93, 'balance': -33},
+                {'start': _dt(2020, 2, 5), 'end': _dt(2020, 3, 4), 'used': 41, 'balance': 19},
+                {'start': _dt(2020, 1, 5), 'end': _dt(2020, 2, 4), 'used': 37, 'balance': 23},
+                {'start': _dt(2019, 12, 5), 'end': _dt(2020, 1, 4), 'used': 51, 'balance': 9},
+            ],
+            2: [
+                {'start': _dt(2020, 4, 10), 'end': _dt(2020, 5, 9), 'used': 20, 'balance': 18},
+                {'start': _dt(2020, 3, 10), 'end': _dt(2020, 4, 9), 'used': 39, 'balance': -1},
+                {'start': _dt(2020, 2, 10), 'end': _dt(2020, 3, 9), 'used': 95, 'balance': -57},
+                {'start': _dt(2020, 1, 10), 'end': _dt(2020, 2, 9), 'used': 33, 'balance': 5},
+                {'start': _dt(2019, 12, 10), 'end': _dt(2020, 1, 9), 'used': 55, 'balance': -17},
+            ],
+        }
+        assert len(billing1) == 5
+        assert len(billing2) == 5
+    
+        def _assert_billing(billing, expect_data):
+            assert billing.used == expect_data['used'], 'used'
+            assert billing.balance == expect_data['balance'], 'balance'
+            _assert_date(billing.start_at, expect_data['start'])
+            _assert_date(billing.end_at, expect_data['end'])
+    
+        for i in range(5):
+&gt;           _assert_billing(billing1[i], expected_data[1][i])
+
+tests/test_billing.py:231: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+billing = &lt;domain.model.Billing object at 0x109c99a30&gt;, expect_data = {'balance': 40, 'end': datetime.date(2020, 5, 4), 'start': datetime.date(2020, 4, 5), 'used': 20}
+
+    def _assert_billing(billing, expect_data):
+&gt;       assert billing.used == expect_data['used'], 'used'
+E       AssertionError: used
+E       assert 21 == 20
+E         +21
+E         -20
+
+tests/test_billing.py:225: AssertionError</failure></testcase><testcase classname="tests.test_billing" name="test_billing_charges_avoid_open_periods" time="0.686" /><testcase classname="tests.test_billing" name="test_billing_charges_avoid_duplicity" time="0.669" /><testcase classname="tests.test_billing" name="test_billing_report" time="0.615" /><testcase classname="tests.test_client" name="test_override_standard_channels_while_sending_whatsapp_message" time="0.001" /><testcase classname="tests.test_client" name="test_private_channel_do_not_use_global_channel_if_lang_is_missing" time="0.001" /><testcase classname="tests.test_client" name="test_invalid_private_channel" time="0.001" /><testcase classname="tests.test_model" name="test_enrollment_status_changes" time="0.001" /><testcase classname="tests.test_model" name="test_chat_do_not_reply_if_already_replied" time="0.001" /><testcase classname="tests.test_model" name="test_company_private_channel_validation" time="0.018" /><testcase classname="tests.test_model" name="test_company_empty_private_channel_validation" time="0.017" /><testcase classname="tests.test_model" name="test_course_content_and_quiz_weights" time="0.035" /><testcase classname="tests.test_model" name="test_course_is_immutable" time="0.002" /><testcase classname="tests.test_model" name="test_user_phone_nine_digits_format" time="0.003"><failure message="AssertionError: assert '5548991698418' == '55489916984182'&#10;  - 55489916984182&#10;  ?              -&#10;  + 5548991698418">def test_user_phone_nine_digits_format():
+        user = model.User()
+        user.phone = '01 48 91698418'
+        assert user.phone == '014891698418'
+    
+        user.phone = '+55(48) 99169-8418'
+&gt;       assert user.phone == '55489916984182'
+E       AssertionError: assert '5548991698418' == '55489916984182'
+E         - 55489916984182
+E         ?              -
+E         + 5548991698418
+
+tests/test_model.py:101: AssertionError</failure></testcase><testcase classname="tests.test_model" name="test_languages_channels" time="0.001" /><testcase classname="tests.test_model" name="test_languages_channels_without_country" time="0.000" /><testcase classname="tests.test_model" name="test_languages_channels_empty_content" time="0.000" /><testcase classname="tests.test_schedules" name="test_create_schedule_in_brazil" time="0.091" /><testcase classname="tests.test_schedules" name="test_create_schedule_colombia" time="0.089" /><testcase classname="tests.test_schedules" name="test_schedule_must_use_only_date_from_scheduling" time="0.077" /><testcase classname="tests.test_schedules" name="test_create_schedule_in_utc_if_enrollment_timezone_is_missing" time="0.079" /><testcase classname="tests.test_schedules" name="test_simulate_schedules_dispatching" time="0.423" /><testcase classname="tests.test_schedules" name="test_dispatch_message_error_schedules_must_be_status_error" time="0.089" /><testcase classname="tests.test_schedules" name="test_schedule_service_anticipate_content" time="0.128" /><testcase classname="tests.test_schedules" name="test_schedule_service_anticipate_last_content" time="0.224" /><testcase classname="tests.test_schedules" name="test_schedule_service_not_anticipate_content_already_anticipated" time="0.125" /><testcase classname="tests.test_schedules" name="test_schedule_service_anticipate_content_if_is_lesson_content" time="0.196" /><testcase classname="tests.test_schedules" name="test_schedule_service_not_anticipate_content_already_scheduled" time="0.116" /><testcase classname="tests.test_schedules" name="test_re_schedule_content" time="0.136" /><testcase classname="tests.test_schedules" name="test_schedules_registry_chat" time="0.243" /><testcase classname="tests.test_schedules" name="test_schedule_service_anticipate_finish_course_all_cases" time="0.223" /><testcase classname="tests.test_schedules" name="test_dispatching_empty_content_should_use_the_content_name" time="0.204" /><testcase classname="tests.test_schedules" name="test_calculate_enrollment_progress" time="0.204" /><testcase classname="tests.test_schedules" name="test_should_notify_schedule_sent" time="0.207" /><testcase classname="tests.test_schedules" name="test_resend_content" time="0.133" /><testcase classname="tests.test_schedules" name="test_resend_throws_not_found" time="0.131" /><testcase classname="tests.test_schema" name="test_power_text_validator_length" time="0.001" /><testcase classname="tests.test_schema" name="test_power_text_validator_linebreak" time="0.001" /><testcase classname="tests.test_schema" name="test_power_text_validator_url" time="0.002" /><testcase classname="tests.test_schema" name="test_power_text_validator_empty" time="0.001" /><testcase classname="tests.test_service" name="test_delete_schedules_from_enrollment_id" time="0.070" /><testcase classname="tests.test_service" name="test_import_xlsx" time="0.044" /><testcase classname="tests.test_service" name="test_delete_course_must_delete_its_lessons_and_contents" time="0.071" /><testcase classname="tests.test_service" name="test_delete_course_must_delete_schedules" time="0.075" /><testcase classname="tests.test_service" name="test_schedule_delete_course_must_notify" time="0.031" /><testcase classname="tests.test_service" name="test_new_enrollment_must_schedule_course_intro_message" time="0.060" /><testcase classname="tests.test_service" name="test_update_enrollment_start_date_only_if_status_is_waiting" time="0.077" /><testcase classname="tests.test_service" name="test_update_enrollment_timezone_only_if_status_is_waiting" time="0.058" /><testcase classname="tests.test_service" name="test_update_enrollment_status_must_follow_model_rules" time="0.139" /><testcase classname="tests.test_service" name="test_update_enrollment_status_to_started_must_schedule_messages" time="0.116" /><testcase classname="tests.test_service" name="test_update_enrollment_status_only_schedule_messages_if_changed" time="0.055" /><testcase classname="tests.test_service" name="test_enrollment_create_add_today_start_date_if_empty" time="0.166" /><testcase classname="tests.test_service" name="test_delete_enrollment_must_delete_schedules" time="0.143" /><testcase classname="tests.test_service" name="test_report_percentage_points" time="0.396" /><testcase classname="tests.test_service" name="test_report_weight_performance" time="0.101" /><testcase classname="tests.test_service" name="test_report_percentage_roundup" time="0.036" /><testcase classname="tests.test_service" name="test_enrollment_tracking" time="0.196" /><testcase classname="tests.test_service" name="test_load_schedule_by_enrollment_and_content" time="0.233" /><testcase classname="tests.test_service" name="test_course_processor" time="0.126" /><testcase classname="tests.test_service" name="test_course_processor_must_process_all_waiting" time="0.080" /><testcase classname="tests.test_service" name="test_course_service_throws_when_delete_if_not_the_owner" time="0.067" /><testcase classname="tests.test_service" name="test_course_service_throws_updating_and_deleting_if_is_in_immutable_status" time="0.307" /><testcase classname="tests.test_service" name="test_enrollment_service_throws_on_add_if_course_not_found" time="0.066" /><testcase classname="tests.test_service" name="test_enrollment_service_throws_on_add_if_course_is_not_finished" time="0.081" /><testcase classname="tests.test_service" name="test_enrollment_service_throws_on_if_try_to_change_the_course_enrolled" time="0.164" /><testcase classname="tests.test_service" name="test_delete_enrollment_in_batch" time="1.160" /><testcase classname="tests.test_service" name="test_chatter_bot_accept_enrollment" time="0.102" /><testcase classname="tests.test_service" name="test_chatter_bot_reject_enrollment" time="0.085" /><testcase classname="tests.test_service" name="test_chatter_bot_invalid_answer_enrollment" time="0.070" /><testcase classname="tests.test_service" name="test_chatter_bot_next_content" time="0.125" /><testcase classname="tests.test_service" name="test_chatter_bot_next_content_all_anticipated" time="0.076" /><testcase classname="tests.test_service" name="test_chatter_bot_next_content_invalid_answer" time="0.093" /><testcase classname="tests.test_service" name="test_chatter_bot_no_enrollment_message_by_lang" time="0.034" /><testcase classname="tests.test_service" name="test_report_performance_type" time="0.000" /><testcase classname="tests.test_service" name="test_report_message_by_performance" time="0.002" /><testcase classname="tests.test_service" name="test_chatter_bot_finish_course" time="0.244" /><testcase classname="tests.test_service" name="test_enrollment_allow_access_if_is_started" time="0.148" /><testcase classname="tests.test_service" name="test_enrollment_allow_access_when_at_least_a_user_has_started_enrollment" time="0.179" /><testcase classname="tests.test_service" name="test_twilio_private_channel_url_parse" time="0.001" /><testcase classname="tests.test_service" name="test_one_enrollment_at_time" time="0.178" /><testcase classname="tests.test_service" name="test_notification_service_not_notify_if_type_not_found" time="0.031" /><testcase classname="tests.test_service" name="test_notification_service" time="0.041" /><testcase classname="tests.test_service" name="test_course_service_load_lesson_must_sort_by_order_as_default" time="0.067" /><testcase classname="tests.test_service" name="test_user_service_add_must_update_user_if_already_exists" time="0.037" /><testcase classname="tests.test_service" name="test_chatter_bot_answer_type" time="0.032" /><testcase classname="tests.test_service" name="test_filter_builder" time="0.013" /><testcase classname="tests.test_service" name="test_message_dispatcher_language_name" time="0.003" /><testcase classname="tests.test_service" name="test_course_backup_only_bkp_and_delete_if_status_is_deleting" time="0.072" /><testcase classname="tests.test_service" name="test_course_backup_verify_if_is_internal_content" time="0.003" /><testcase classname="tests.test_service" name="test_course_backup_shortname_generator" time="0.004" /><testcase classname="tests.test_service" name="test_course_backup_deletes_after_backup" time="0.007" /><testcase classname="tests.test_service" name="test_course_backup_delete_notifies_first" time="0.010"><failure message="assert 1 == 2&#10;  +1&#10;  -2">def test_course_backup_delete_notifies_first():
+        course = model.Course()
+        course.status = model.CourseStatus.deleting
+        course_service = mock.MagicMock()
+        course_service.load.return_value = course
+        callbacks = []
+    
+        def _notify(_, __):
+            callbacks.append('N')
+    
+        def _delete(_):
+            callbacks.append('D')
+    
+        course_service.delete.side_effect = _delete
+        notification_service = mock.MagicMock()
+        notification_service.notify_course_download.side_effect = _notify
+        backup_func_mock = 'domain.service.CourseBackupService.backup_course'
+        with mock.patch(backup_func_mock) as mock_backup_func:
+            course_backup = service.CourseBackupService(course_service, notification_service, None, None, None)
+            course_backup.backup_and_delete(course.id)
+&gt;           assert mock_backup_func.call_count == 2
+E           assert 1 == 2
+E             +1
+E             -2
+
+tests/test_service.py:1004: AssertionError</failure></testcase><testcase classname="tests.test_service" name="test_course_backup_assert_mocks_call" time="0.004" /></testsuite></testsuites>
