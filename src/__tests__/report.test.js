@@ -36,3 +36,18 @@ test("Test report single coverage package", () => {
     reportExpected
   );
 });
+
+test("Test custom report", () => {
+  const coverageContent = loadFile("data/coverage_single_package.xml");
+  const coverageData = getCoverageData(coverageContent);
+  const junitContent = loadFile("data/junit_failure.xml");
+  const junitData = getJUnitData(junitContent);
+  const customTemplateContent = loadFile("data/custom_template.tmpl");
+  const repositoryUrl =
+    "https://www.github.com/xportation/junit-coverage-report/main";
+
+  const reportExpected = loadFile("data/custom_report.html");
+  expect(getReport(junitData, coverageData, repositoryUrl, customTemplateContent)).toBe(
+    reportExpected
+  );
+});

@@ -21,6 +21,10 @@ inputs:
     default: './coverage.xml'
     required: false
 
+  template-path:
+    description: 'Custom template file path'
+    required: false
+
 runs:
   using: 'node16'
   main: 'dist/index.js'

@@ -79,10 +79,6 @@ const template =
   "{{/if}}";
 
 const buildCoverageMissingCoverageLines = (missing, fileUrl) => {
-  if (!missing) {
-    return [];
-  }
-
   return missing.map((range) => {
     const [start, end = start] = range.split("-");
     const fragment = start === end ? `L${start}` : `L${start}-L${end}`;
@@ -140,11 +136,16 @@ const buildJunitInfo = (junitData) => {
   return { tests, skipped, failures, errors, time, failuresItems };
 };
 
-const getReport = (junitData, coverageData, repositoryUrl) => {
+const getReport = (junitData, coverageData, repositoryUrl, templateContent) => {
   const coverage = buildCoverageInfo(coverageData, repositoryUrl);
   const junit = buildJunitInfo(junitData);
 
-  const render = Handlebars.compile(template);
+  let render;
+  if (templateContent) {
+    render = Handlebars.compile(templateContent);
+  } else {
+    render = Handlebars.compile(template);
+  }
   return render({ coverage, junit });
 };
 

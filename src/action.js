@@ -19,6 +19,13 @@ async function main() {
     })
   );
 
+  const customTemplate = getFileContent(
+    core.getInput("template-path", {
+      required: false,
+    })
+  );
+
+  console.log(customTemplate);
   console.log(getJUnitData(junitFileContent));
   console.log(getCoverageData(coverageFileContent));
   console.log(getUnitReport());
