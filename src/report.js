@@ -69,7 +69,7 @@ const template =
   "        <tbody>" +
   "            {{#junit.failuresItems}}" +
   "            <tr>" +
-  "                <td>{{filename}}</td>\n" +
+  "                <td>{{filename}}</td>" +
   "                <td><code>{{{message}}}</code></td>" +
   "            </tr>" +
   "            {{/junit.failuresItems}}" +
