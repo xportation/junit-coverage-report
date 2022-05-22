@@ -58,6 +58,7 @@ const template =
   "    </tbody>" +
   "</table>" +
   "<br/>" +
+  "{{#if junit.failuresItems}}" +
   "<details>" +
   "    <summary>Unit Failures</summary>" +
   "    <table>" +
@@ -74,7 +75,8 @@ const template =
   "            {{/junit.failuresItems}}" +
   "        </tbody>" +
   "    </table>" +
-  "</details>";
+  "</details>" +
+  "{{/if}}";
 
 const buildCoverageMissingCoverageLines = (missing, fileUrl) => {
   if (!missing) {
