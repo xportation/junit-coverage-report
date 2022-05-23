@@ -9,8 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
-
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js
@@ -21,3 +19,13 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
+
+  report:
+    name: Report
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./
+        with:
+          junit-path: ./__tests__/data/junit_failure.xml
+          coverage-path: ./__tests__/data/coverage.xml
