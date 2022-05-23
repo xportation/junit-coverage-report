@@ -9,9 +9,10 @@ const addPullRequestComment = async (githubToken, message) => {
   const issueNumber = payload.pull_request ? payload.pull_request.number : 0;
   const commentBody = WATERMARK + message;
 
+  core.info('Add PR Comment');
   const octokit = github.getOctokit(githubToken);
 
-  const { data: comments } = await octokit.issues.listComments({
+  const { data: comments } = await octokit.rest.issues.listComments({
     repo,
     owner,
     issueNumber,
@@ -28,7 +29,7 @@ const addPullRequestComment = async (githubToken, message) => {
       repo,
       owner,
       comment_id: comment.id,
-      commentBody,
+      body: commentBody,
     });
   } else {
     core.info('No previous commit founded, creating a new one');
@@ -36,7 +37,7 @@ const addPullRequestComment = async (githubToken, message) => {
       repo,
       owner,
       issueNumber,
-      commentBody,
+      body: commentBody,
     });
   }
 }
