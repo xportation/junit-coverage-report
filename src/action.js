@@ -25,6 +25,14 @@ const generateReport = (junitFileContent, coverageFileContent, customTemplateFil
   return getReport(junitData, coverageData, repositoryUrl, customTemplateFileContent);
 }
 
+const addComment = async (token, report) => {
+  const { context } = github;
+  const { eventName } = context;
+  if (eventName === "pull_request") {
+    await addPullRequestComment(token, report);
+  }
+}
+
 async function main() {
   console.log("--- junit coverage report ---");
   const token = core.getInput("github-token", { required: true });
@@ -37,7 +45,7 @@ async function main() {
   const customTemplateFileContent = loadFile(templatePath);
 
   const report = generateReport(junitFileContent, coverageFileContent, customTemplateFileContent);
-  await addPullRequestComment(token, report);
+  await addComment(token, report);
 }
 
 main().catch((err) => {
