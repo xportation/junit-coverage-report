@@ -12,12 +12,14 @@ const addPullRequestComment = async (githubToken, message) => {
   core.info('Add PR Comment');
   const octokit = github.getOctokit(githubToken);
 
+  console.log("Listing comments");
   const { data: comments } = await octokit.issues.listComments({
     repo,
     owner,
     issueNumber,
   });
 
+  console.log(`Comments count: ${comments.length}`);
   const comment = comments.find(
     (c) =>
       c.user.login === 'github-actions[bot]' && c.body.startsWith(WATERMARK)
