@@ -12,6 +12,14 @@ const addPullRequestComment = async (githubToken, message) => {
   core.info('Add PR Comment');
   const octokit = github.getOctokit(githubToken);
 
+  console.log(`Create comment: ${repo} - ${owner} - ${issueNumber}`);
+  await octokit.issues.createComment({
+    repo,
+    owner,
+    issueNumber,
+    body: commentBody,
+  });
+
   console.log("Listing comments");
   const { data: comments } = await octokit.issues.listComments({
     repo,
