@@ -12,7 +12,7 @@ const addPullRequestComment = async (githubToken, message) => {
   core.info('Add PR Comment');
   const octokit = github.getOctokit(githubToken);
 
-  const { data: comments } = await octokit.rest.issues.listComments({
+  const { data: comments } = await octokit.issues.listComments({
     repo,
     owner,
     issueNumber,
@@ -25,7 +25,7 @@ const addPullRequestComment = async (githubToken, message) => {
 
   if (comment) {
     core.info('Founded previous commit, updating');
-    await octokit.rest.issues.updateComment({
+    await octokit.issues.updateComment({
       repo,
       owner,
       comment_id: comment.id,
@@ -33,7 +33,7 @@ const addPullRequestComment = async (githubToken, message) => {
     });
   } else {
     core.info('No previous commit founded, creating a new one');
-    await octokit.rest.issues.createComment({
+    await octokit.issues.createComment({
       repo,
       owner,
       issueNumber,
