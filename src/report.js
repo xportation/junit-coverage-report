@@ -1,5 +1,6 @@
 const Handlebars = require("handlebars");
 const urlJoin = require("proper-url-join");
+const _ = require("lodash");
 
 const template =
   "<img alt=\"Coverage\" src=\"{{coverage.badge}}\" />" +
@@ -99,6 +100,9 @@ const buildCoverageBadgeUrl = (percentage) => {
 };
 
 const buildCoverageInfo = (coverageData, repositoryUrl) => {
+  if (_.isEmpty(coverageData)) {
+    return {}
+  }
   const title = "Coverage Report";
   const badge = buildCoverageBadgeUrl(coverageData.total.percentage);
   const total = {
@@ -121,6 +125,9 @@ const buildCoverageInfo = (coverageData, repositoryUrl) => {
 };
 
 const buildJunitInfo = (junitData) => {
+  if (_.isEmpty(junitData)) {
+    return {}
+  }
   const tests = junitData.total.tests;
   const skipped = junitData.total.skipped;
   const failures = junitData.total.failures;

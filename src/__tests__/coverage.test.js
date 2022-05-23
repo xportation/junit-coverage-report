@@ -56,3 +56,8 @@ test("Test coverage items single package", () => {
   const coverageData = getCoverageData(coverageContent);
   expect(coverageData.coverage).toHaveLength(2);
 });
+
+test("Test invalid xml file result is null", () => {
+  const coverageData = getCoverageData("Not a xml");
+  expect(coverageData).toBeNull();
+});

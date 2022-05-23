@@ -1,9 +1,12 @@
 const { XMLParser } = require("fast-xml-parser");
 const core = require("@actions/core");
+const _ = require("lodash");
 
 const getJUnitData = (fileContent) => {
   const junitXml = parseJunitXml(fileContent);
-  if (!junitXml) return null;
+  if (!junitXml) {
+    return null;
+  }
 
   const total = getTotal(junitXml);
   const failures = getFailures(junitXml);
@@ -22,7 +25,7 @@ const parseJunitXml = (junitContent) => {
   const parser = new XMLParser(options);
   const output = parser.parse(junitContent);
 
-  if (!output) {
+  if (_.isEmpty(output)) {
     core.warning(`Junit file is not XML or not well formed`);
     return null;
   }

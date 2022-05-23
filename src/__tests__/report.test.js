@@ -51,3 +51,31 @@ test("Test custom report", () => {
     reportExpected
   );
 });
+
+test("Test coverage badge", () => {
+  const colorsExpected = [
+    {percentage: 92, color: 'brightgreen'},
+    {percentage: 80, color: 'green'},
+    {percentage: 73, color: 'yellow'},
+    {percentage: 40, color: 'orange'},
+    {percentage: 39, color: 'red'},
+  ]
+
+  const template = "{{coverage.badge}}";
+  for (let i = 0; i < colorsExpected.length; i++) {
+    const total = {
+      stmts: 0,
+      miss: 0,
+      cover: '0%',
+      percentage: colorsExpected[i].percentage,
+    };
+    const report = getReport({}, {total, coverage: []}, "", template);
+    expect(report).toBe(`https://img.shields.io/badge/Coverage-${colorsExpected[i].percentage}%25-${colorsExpected[i].color}.svg`);
+  }
+});
+
+test("Test empty data", () => {
+  const template = "{{coverage.badge}}0{{junit.tests}}";
+  const report = getReport({}, {}, "", template);
+  expect(report).toBe("0");
+});

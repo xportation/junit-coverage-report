@@ -1,9 +1,12 @@
 const { XMLParser } = require("fast-xml-parser");
 const core = require("@actions/core");
+const _ = require("lodash");
 
 const getCoverageData = (fileContent) => {
   const coverageXml = parseCoverageXml(fileContent);
-  if (!coverageXml) return null;
+  if (!coverageXml) {
+    return null;
+  }
 
   const total = getTotal(coverageXml);
   const coverage = parseXml(coverageXml);
@@ -22,7 +25,7 @@ const parseCoverageXml = (coverageContent) => {
   const parser = new XMLParser(options);
   const output = parser.parse(coverageContent);
 
-  if (!output) {
+  if (_.isEmpty(output)) {
     core.warning(`Coverage file is not XML or not well formed`);
     return null;
   }
