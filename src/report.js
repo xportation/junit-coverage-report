@@ -1,5 +1,6 @@
 const Handlebars = require("handlebars");
 const urlJoin = require("proper-url-join");
+const _ = require("lodash");
 
 const template =
   "<img alt=\"Coverage\" src=\"{{coverage.badge}}\" />" +
@@ -58,6 +59,7 @@ const template =
   "    </tbody>" +
   "</table>" +
   "<br/>" +
+  "{{#if junit.failuresItems}}" +
   "<details>" +
   "    <summary>Unit Failures</summary>" +
   "    <table>" +
@@ -68,19 +70,16 @@ const template =
   "        <tbody>" +
   "            {{#junit.failuresItems}}" +
   "            <tr>" +
-  "                <td>{{filename}}</td>\n" +
+  "                <td>{{filename}}</td>" +
   "                <td><code>{{{message}}}</code></td>" +
   "            </tr>" +
   "            {{/junit.failuresItems}}" +
   "        </tbody>" +
   "    </table>" +
-  "</details>";
+  "</details>" +
+  "{{/if}}";
 
 const buildCoverageMissingCoverageLines = (missing, fileUrl) => {
-  if (!missing) {
-    return [];
-  }
-
   return missing.map((range) => {
     const [start, end = start] = range.split("-");
     const fragment = start === end ? `L${start}` : `L${start}-L${end}`;
@@ -101,6 +100,9 @@ const buildCoverageBadgeUrl = (percentage) => {
 };
 
 const buildCoverageInfo = (coverageData, repositoryUrl) => {
+  if (_.isEmpty(coverageData)) {
+    return {}
+  }
   const title = "Coverage Report";
   const badge = buildCoverageBadgeUrl(coverageData.total.percentage);
   const total = {
@@ -123,6 +125,9 @@ const buildCoverageInfo = (coverageData, repositoryUrl) => {
 };
 
 const buildJunitInfo = (junitData) => {
+  if (_.isEmpty(junitData)) {
+    return {}
+  }
   const tests = junitData.total.tests;
   const skipped = junitData.total.skipped;
   const failures = junitData.total.failures;
@@ -138,11 +143,16 @@ const buildJunitInfo = (junitData) => {
   return { tests, skipped, failures, errors, time, failuresItems };
 };
 
-const getReport = (junitData, coverageData, repositoryUrl) => {
+const getReport = (junitData, coverageData, repositoryUrl, templateContent) => {
   const coverage = buildCoverageInfo(coverageData, repositoryUrl);
   const junit = buildJunitInfo(junitData);
 
-  const render = Handlebars.compile(template);
+  let render;
+  if (templateContent) {
+    render = Handlebars.compile(templateContent);
+  } else {
+    render = Handlebars.compile(template);
+  }
   return render({ coverage, junit });
 };
 

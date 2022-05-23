@@ -1,4 +1,4 @@
-name: 'Pyunit-cov Commentator'
+name: 'Junit Coverage Report'
 description: 'Comment a pull request with unit tests and coverage reports'
 author: 'Leonardo Vitor da Silva'
 branding:
@@ -7,9 +7,9 @@ branding:
 
 inputs:
   github-token:
-    description: 'GitHub API Access Token'
+    description: GitHub Access Token
+    required: false
     default: ${{ github.token }}
-    required: true
 
   junit-path:
     description: 'JUnit file path'
@@ -19,6 +19,10 @@ inputs:
   coverage-path:
     description: 'Coverage file path'
     default: './coverage.xml'
+    required: false
+
+  template-path:
+    description: 'Custom template file path'
     required: false
 
 runs:

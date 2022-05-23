@@ -83,3 +83,8 @@ test("Test missing file result is null", () => {
   const junitData = getJUnitData(junitContent);
   expect(junitData).toBeNull();
 });
+
+test("Test invalid xml file result is null", () => {
+  const junitData = getJUnitData("Not a xml");
+  expect(junitData).toBeNull();
+});

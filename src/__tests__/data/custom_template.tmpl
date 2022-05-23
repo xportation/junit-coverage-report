@@ -1,0 +1,21 @@
+<img alt="Coverage" src="{{coverage.badge}}" />
+<br/>
+<summary>Good Report</summary>
+<br/>
+<details>
+    <summary>Unit Failures</summary>
+    <table>
+        <tr>
+            <th>Test</th>
+            <th>Message</th>
+        </tr>
+        <tbody>
+            {{#junit.failuresItems}}
+            <tr>
+                <td>{{filename}}</td>
+                <td><code>{{{message}}}</code></td>
+            </tr>
+            {{/junit.failuresItems}}
+        </tbody>
+    </table>
+</details>
