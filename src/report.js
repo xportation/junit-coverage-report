@@ -137,7 +137,7 @@ const buildJunitInfo = (junitData) => {
   for (let i = 0; i < junitData.failures.length; i++) {
     const failure = junitData.failures[i];
     const filename = failure.name;
-    const message = failure.failureMessage.replaceAll("&#10", "<br/>");
+    const message = failure.failureMessage.replace(/&#10/g, "<br/>");
     failuresItems.push({ filename, message });
   }
   return { tests, skipped, failures, errors, time, failuresItems };
