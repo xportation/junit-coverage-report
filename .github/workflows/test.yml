@@ -22,9 +22,3 @@ jobs:
       - run: npm ci
       - run: npm run build --if-present
       - run: npm test
-      - name: Create report
-        uses: ./
-        if: success() || failure()
-        with:
-          junit-path: ./__tests__/data/junit_failure.xml
-          coverage-path: ./__tests__/data/coverage.xml
