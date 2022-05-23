@@ -21,6 +21,8 @@ jobs:
       - run: npm test
       - name: Create report
         uses: ./
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         if: success() || failure()
         with:
           junit-path: ./__tests__/data/junit_failure.xml

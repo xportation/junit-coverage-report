@@ -1,4 +1,4 @@
-name: 'Pyunit-cov Commentator'
+name: 'Junit Coverage Report'
 description: 'Comment a pull request with unit tests and coverage reports'
 author: 'Leonardo Vitor da Silva'
 branding:
