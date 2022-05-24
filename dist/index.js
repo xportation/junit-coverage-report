@@ -37730,7 +37730,7 @@ const addPullRequestComment = async (githubToken, message) => {
   const { data: comments } = await octokit.issues.listComments({
     repo,
     owner,
-    issueNumber,
+    issue_number: issueNumber,
   });
 
   const comment = comments.find(
@@ -37739,7 +37739,6 @@ const addPullRequestComment = async (githubToken, message) => {
   );
 
   if (comment) {
-    core.info('Founded previous commit, updating');
     await octokit.issues.updateComment({
       repo,
       owner,
@@ -37747,11 +37746,10 @@ const addPullRequestComment = async (githubToken, message) => {
       body: commentBody,
     });
   } else {
-    core.info('No previous commit founded, creating a new one');
     await octokit.issues.createComment({
       repo,
       owner,
-      issueNumber,
+      issue_number: issueNumber,
       body: commentBody,
     });
   }
@@ -38116,8 +38114,16 @@ const buildJunitInfo = (junitData) => {
 };
 
 const getReport = (junitData, coverageData, repositoryUrl, templateContent) => {
+  console.log("JUnit Data", junitData);
+  console.log("Coverage Data", coverageData);
+  console.log("Repository URL", repositoryUrl);
+  console.log("Template Content", templateContent);
+
   const coverage = buildCoverageInfo(coverageData, repositoryUrl);
   const junit = buildJunitInfo(junitData);
+
+  console.log("JUnit Info", junit);
+  console.log("Coverage Info", coverage);
 
   let render;
   if (templateContent) {
@@ -38143,6 +38149,7 @@ const getFileContent = (pathToFile) => {
     return null;
   }
 
+  console.log("File to read", pathToFile);
   return fs.readFileSync(pathToFile, "utf8");
 };
 
@@ -38345,6 +38352,7 @@ const loadFile = (filePath) => {
     return null;
   }
 
+  console.log("File Path", filePath);
   filePath = filePath.startsWith("/") ? filePath : `${process.env.GITHUB_WORKSPACE}/${filePath}`;
   return getFileContent(filePath);
 }

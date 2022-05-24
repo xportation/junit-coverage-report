@@ -144,8 +144,16 @@ const buildJunitInfo = (junitData) => {
 };
 
 const getReport = (junitData, coverageData, repositoryUrl, templateContent) => {
+  console.log("JUnit Data", junitData);
+  console.log("Coverage Data", coverageData);
+  console.log("Repository URL", repositoryUrl);
+  console.log("Template Content", templateContent);
+
   const coverage = buildCoverageInfo(coverageData, repositoryUrl);
   const junit = buildJunitInfo(junitData);
+
+  console.log("JUnit Info", junit);
+  console.log("Coverage Info", coverage);
 
   let render;
   if (templateContent) {

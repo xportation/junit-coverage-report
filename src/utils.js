@@ -5,6 +5,7 @@ const getFileContent = (pathToFile) => {
     return null;
   }
 
+  console.log("File to read", pathToFile);
   return fs.readFileSync(pathToFile, "utf8");
 };
 

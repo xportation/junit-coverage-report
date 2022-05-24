@@ -11,13 +11,12 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '12.x'
+          node-version: '16.x'
       - run: npm ci
       - run: npm run build --if-present
       - run: npm test
       - name: Create report
         uses: ./
         with:
-          github-token: ${{ secrets.CI_TOKEN }}
           junit-path: ./__tests__/data/junit_failure.xml
           coverage-path: ./__tests__/data/coverage.xml

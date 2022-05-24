@@ -11,6 +11,7 @@ const loadFile = (filePath) => {
     return null;
   }
 
+  console.log("File Path", filePath);
   filePath = filePath.startsWith("/") ? filePath : `${process.env.GITHUB_WORKSPACE}/${filePath}`;
   return getFileContent(filePath);
 }
