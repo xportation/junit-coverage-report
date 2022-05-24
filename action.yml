@@ -8,8 +8,8 @@ branding:
 inputs:
   github-token:
     description: GitHub Access Token
-    required: false
     default: ${{ github.token }}
+    required: true
 
   junit-path:
     description: 'JUnit file path'
