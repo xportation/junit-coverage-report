@@ -12,29 +12,18 @@ const addPullRequestComment = async (githubToken, message) => {
   core.info('Add PR Comment');
   const octokit = github.getOctokit(githubToken);
 
-  console.log(`Create comment: ${repo} - ${owner} - ${issueNumber}`);
-  await octokit.issues.createComment({
-    repo,
-    owner,
-    issueNumber,
-    body: commentBody,
-  });
-
-  console.log("Listing comments");
   const { data: comments } = await octokit.issues.listComments({
     repo,
     owner,
-    issueNumber,
+    issue_number: issueNumber,
   });
 
-  console.log(`Comments count: ${comments.length}`);
   const comment = comments.find(
     (c) =>
       c.user.login === 'github-actions[bot]' && c.body.startsWith(WATERMARK)
   );
 
   if (comment) {
-    core.info('Founded previous commit, updating');
     await octokit.issues.updateComment({
       repo,
       owner,
@@ -42,11 +31,10 @@ const addPullRequestComment = async (githubToken, message) => {
       body: commentBody,
     });
   } else {
-    core.info('No previous commit founded, creating a new one');
     await octokit.issues.createComment({
       repo,
       owner,
-      issueNumber,
+      issue_number: issueNumber,
       body: commentBody,
     });
   }
