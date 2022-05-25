@@ -37976,7 +37976,7 @@ const template =
   "<img alt=\"Coverage\" src=\"{{coverage.badge}}\" />" +
   "<br/>" +
   "<details>" +
-  "    <summary>{{coverage.title}}</summary>" +
+  "    <summary>Coverage Report</summary>" +
   "    <table>" +
   "        <tr>" +
   "            <th>File</th>" +
@@ -38073,7 +38073,6 @@ const buildCoverageInfo = (coverageData, repositoryUrl) => {
   if (_.isEmpty(coverageData)) {
     return {}
   }
-  const title = "Coverage Report";
   const badge = buildCoverageBadgeUrl(coverageData.total.percentage);
   const total = {
     stmts: coverageData.total.stmts,
@@ -38091,7 +38090,7 @@ const buildCoverageInfo = (coverageData, repositoryUrl) => {
     const missing = buildCoverageMissingCoverageLines(item.missing, fileUrl);
     items.push({ fileUrl, filename, stmts, miss, cover, missing });
   }
-  return { title, badge, total, items };
+  return { badge, total, items };
 };
 
 const buildJunitInfo = (junitData) => {
