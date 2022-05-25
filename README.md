@@ -20,9 +20,9 @@ Add this action to your GitHub workflow as follows:
 
 ## Default report:
 ### Collapsed
-![Collapsed](https://user-images.githubusercontent.com/4412615/170160271-f90ec3ed-3a80-4b56-bd93-8e6ae615ec70.jpg)
+![Collapsed](https://user-images.githubusercontent.com/4412615/170374600-98ea5b61-3230-4a05-b9f0-d224d0a29eb1.jpg)
 ### Expanded
-![full_comment_sample](https://user-images.githubusercontent.com/4412615/170160281-9b0c5b64-48a7-4262-8147-337a7aa38d86.jpg)
+![full_comment_sample](https://user-images.githubusercontent.com/4412615/170374592-fb2464e9-9236-4242-a24c-d2a86fc5a80b.jpg)
 
 ## Custom reports
 You can define custom reports using [Handlebars](https://handlebarsjs.com) templates.  
@@ -41,7 +41,6 @@ The data schema provided for the template rendering:
 ```txt
 {
   coverage: {
-    title: "Coverage Report",
     badge,
     total: {
       stmts,
@@ -86,7 +85,7 @@ The default template is below:
 <img alt="Coverage" src="{{coverage.badge}}" />
 <br/>
 <details>
-    <summary>{{coverage.title}}</summary>
+    <summary>Coverage Report</summary>
     <table>
         <tr>
             <th>File</th>
