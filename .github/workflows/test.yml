@@ -20,3 +20,9 @@ jobs:
         with:
           junit-path: ./src/__tests__/data/junit_failure.xml
           coverage-path: ./src/__tests__/data/coverage.xml
+      - name: Create custom report
+        uses: ./
+        with:
+          template-path: ./src/__tests__/data/custom_template.tmpl
+          junit-path: ./src/__tests__/data/junit_failure.xml
+          coverage-path: ./src/__tests__/data/coverage.xml
