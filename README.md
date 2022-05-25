@@ -1,8 +1,7 @@
 
 # JUnit Coverage Report
 
-![licence](https://img.shields.io/github/license/xportation/junit-coverage-report)  
-![version](https://img.shields.io/github/package-json/v/xportation/junit-coverage-report)
+![licence](https://img.shields.io/github/license/xportation/junit-coverage-report) ![version](https://img.shields.io/github/package-json/v/xportation/junit-coverage-report)
 
 Add a pull request comment with tests results and coverage report.  
 Works with `junit` and `coverage` XML output from `pytest`.
