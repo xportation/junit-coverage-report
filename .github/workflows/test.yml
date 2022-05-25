@@ -20,6 +20,16 @@ jobs:
         with:
           junit-path: ./src/__tests__/data/junit_failure.xml
           coverage-path: ./src/__tests__/data/coverage.xml
+  build_custom_report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm test
       - name: Create custom report
         uses: ./
         with:
