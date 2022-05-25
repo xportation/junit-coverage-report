@@ -39,7 +39,7 @@ Just add the `template-path` with the file url.
 
 ### Data Schema
 The data schema provided for the template rendering:
-```json
+```txt
 {
   coverage: {
     title: "Coverage Report",
