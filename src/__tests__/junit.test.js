@@ -58,7 +58,7 @@ test("Test junit failures", () => {
     {
       name: "test_user_phone_nine_digits_format",
       failureMessage:
-        "AssertionError: assert '5548991698418' == '55489916984182'&#10;  - 55489916984182&#10;  ?              -&#10;  + 5548991698418",
+        "AssertionError: assert '5548991114448' == '55489911144482'&#10;  - 55489911144482&#10;  ?              -&#10;  + 5548991114448",
     },
     {
       name: "test_course_backup_delete_notifies_first",
