@@ -17,7 +17,7 @@ test("Test junit success", () => {
     failures: "0",
     skipped: "0",
     tests: "96",
-    time: "96",
+    time: "11.438",
     timestamp: "2022-05-15T21:47:44.406170",
   };
   expect(junitData.total).toEqual(total);
@@ -34,7 +34,7 @@ test("Test junit failure", () => {
     failures: "4",
     skipped: "0",
     tests: "96",
-    time: "96",
+    time: "13.546",
     timestamp: "2022-05-15T21:50:52.356117",
   };
   expect(junitData.total).toEqual(total);

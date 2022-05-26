@@ -40,7 +40,7 @@ const getTotal = (junitXml) => {
     failures: testSuite["@_failures"],
     skipped: testSuite["@_skipped"],
     tests: testSuite["@_tests"],
-    time: testSuite["@_tests"],
+    time: testSuite["@_time"],
     timestamp: testSuite["@_timestamp"],
   };
 };
