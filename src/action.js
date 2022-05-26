@@ -20,6 +20,8 @@ const generateReport = (junitFileContent, coverageFileContent, customTemplateFil
   const { repo, owner } = context.repo;
   const repositoryUrl = repository || `${owner}/${repo}`
 
+  console.log('Repository URL', repositoryUrl);
+
   const coverageData = getCoverageData(coverageFileContent);
   const junitData = getJUnitData(junitFileContent);
   return getReport(junitData, coverageData, repositoryUrl, customTemplateFileContent);

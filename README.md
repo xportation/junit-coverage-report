@@ -17,6 +17,15 @@ Add this action to your GitHub workflow as follows:
     junit-path: ./reports/unit/unit.xml  
     coverage-path: ./reports/coverage/coverage.xml
 ```
+You can also define `github-token` used for the Github comments API.
+```yaml
+- name: Custom Reports
+  uses: xportation/junit-coverage-report@main
+  with:
+    github-token: {{ $secrets.your_secret }}   
+    junit-path: ./reports/unit/unit.xml  
+    coverage-path: ./reports/coverage/coverage.xml
+```
 
 ## Default report:
 ### Collapsed
@@ -35,7 +44,6 @@ Just add the `template-path` with the file url.
     junit-path: ./reports/unit/unit.xml  
     coverage-path: ./reports/coverage/coverage.xml
 ```
-
 ### Data Schema
 The data schema provided for the template rendering:
 ```txt
