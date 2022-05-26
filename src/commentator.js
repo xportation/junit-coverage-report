@@ -5,10 +5,6 @@ const addPullRequestComment = async (githubToken, message) => {
   const { context } = github;
   const { repo, owner } = context.repo;
   const { payload } = context;
-  console.log('--- Github ---');
-  console.log(JSON.stringify(github, null, 3));
-  console.log('/-- Github ---');
-
   const WATERMARK = `<!-- junit coverage report: ${context.job} -->\n`;
   const issueNumber = payload.pull_request ? payload.pull_request.number : 0;
   const commentBody = WATERMARK + message;
