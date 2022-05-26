@@ -1,0 +1,30 @@
+name: 'Junit Coverage Report'
+description: 'Comment a pull request with unit tests and coverage reports'
+author: 'Leonardo Vitor da Silva'
+branding:
+  icon: 'square'
+  color: 'purple'
+
+inputs:
+  github-token:
+    description: GitHub Access Token
+    default: ${{ github.token }}
+    required: true
+
+  junit-path:
+    description: 'JUnit file path'
+    default: './unit.xml'
+    required: false
+
+  coverage-path:
+    description: 'Coverage file path'
+    default: './coverage.xml'
+    required: false
+
+  template-path:
+    description: 'Custom template file path'
+    required: false
+
+runs:
+  using: 'node16'
+  main: 'dist/index.js'

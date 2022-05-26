@@ -1,0 +1,38 @@
+name: Test
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm test
+      - name: Create report
+        uses: ./
+        with:
+          junit-path: ./src/__tests__/data/junit_failure.xml
+          coverage-path: ./src/__tests__/data/coverage.xml
+  build_custom_report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm test
+      - name: Create custom report
+        uses: ./
+        with:
+          template-path: ./src/__tests__/data/custom_template.tmpl
+          junit-path: ./src/__tests__/data/junit_failure.xml
+          coverage-path: ./src/__tests__/data/coverage.xml
