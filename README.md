@@ -29,9 +29,9 @@ You can also define `github-token` used for the Github comments API.
 
 ## Default report:
 ### Collapsed
-![Collapsed](https://user-images.githubusercontent.com/4412615/170374600-98ea5b61-3230-4a05-b9f0-d224d0a29eb1.jpg)
+![Collapsed](https://user-images.githubusercontent.com/4412615/170509399-061fcaea-6aff-4449-8fec-58a5fb992b19.jpg)
 ### Expanded
-![full_comment_sample](https://user-images.githubusercontent.com/4412615/170374592-fb2464e9-9236-4242-a24c-d2a86fc5a80b.jpg)
+![Expanded](https://user-images.githubusercontent.com/4412615/170509295-029e877d-a8ab-4016-a033-15a1208dcba2.jpg)
 
 ## Custom reports
 You can define custom reports using [Handlebars](https://handlebarsjs.com) templates.  
