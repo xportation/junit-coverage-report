@@ -22,10 +22,7 @@ const getPullRequestFilesUrl = () => {
   const { repo, owner } = context.repo;
   const _repository = repository || `${owner}/${repo}`
   const commit = payload.pull_request.head.sha;
-  const repositoryUrl = `https://github.com/${_repository}/blob/${commit}`;
-
-  console.log('Repository URL', repositoryUrl);
-  return repositoryUrl;
+  return `https://github.com/${_repository}/blob/${commit}`;
 }
 
 const generateReport = (junitFileContent, coverageFileContent, customTemplateFileContent) => {
