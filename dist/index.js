@@ -37720,10 +37720,6 @@ const addPullRequestComment = async (githubToken, message) => {
   const { context } = github;
   const { repo, owner } = context.repo;
   const { payload } = context;
-  console.log('--- Github ---');
-  console.log(JSON.stringify(github, null, 3));
-  console.log('/-- Github ---');
-
   const WATERMARK = `<!-- junit coverage report: ${context.job} -->\n`;
   const issueNumber = payload.pull_request ? payload.pull_request.number : 0;
   const commentBody = WATERMARK + message;
@@ -38350,7 +38346,6 @@ const loadFile = (filePath) => {
   return getFileContent(filePath);
 }
 
-
 const getPullRequestFilesUrl = () => {
   const { context, repository } = github;
   const { payload } = context;
@@ -38367,27 +38362,25 @@ const generateReport = (junitFileContent, coverageFileContent, customTemplateFil
   return getReport(junitData, coverageData, repositoryUrl, customTemplateFileContent);
 }
 
-const addComment = async (token, report) => {
+async function main() {
+  console.log("--- junit coverage report ---");
+
   const { context } = github;
   const { eventName } = context;
   if (eventName === "pull_request") {
+    console.log("--- junit coverage report: pull request event ---");
+    const token = core.getInput("github-token", { required: true });
+    const junitPath = core.getInput("junit-path", { required: false });
+    const coveragePath = core.getInput("coverage-path", { required: false });
+    const templatePath = core.getInput("template-path", { required: false });
+
+    const junitFileContent = loadFile(junitPath);
+    const coverageFileContent = loadFile(coveragePath);
+    const customTemplateFileContent = loadFile(templatePath);
+
+    const report = generateReport(junitFileContent, coverageFileContent, customTemplateFileContent);
     await addPullRequestComment(token, report);
   }
-}
-
-async function main() {
-  console.log("--- junit coverage report ---");
-  const token = core.getInput("github-token", { required: true });
-  const junitPath = core.getInput("junit-path", { required: false });
-  const coveragePath = core.getInput("coverage-path", { required: false });
-  const templatePath = core.getInput("template-path", { required: false });
-
-  const junitFileContent = loadFile(junitPath);
-  const coverageFileContent = loadFile(coveragePath);
-  const customTemplateFileContent = loadFile(templatePath);
-
-  const report = generateReport(junitFileContent, coverageFileContent, customTemplateFileContent);
-  await addComment(token, report);
 }
 
 main().catch((err) => {

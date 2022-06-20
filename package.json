@@ -1,6 +1,6 @@
 {
   "name": "junit-coverage-report",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Pull request comments with junit and coverage reports",
   "main": "src/action.js",
   "scripts": {
