@@ -3,6 +3,7 @@ const urlJoin = require("proper-url-join");
 const _ = require("lodash");
 
 const template =
+  "{{#if coverage}}" +
   "<img alt=\"Coverage\" src=\"{{coverage.badge}}\" />" +
   "<br/>" +
   "<details>" +
@@ -40,6 +41,8 @@ const template =
   "    </table>" +
   "</details>" +
   "<br/> " +
+  "{{/if}}" +
+  "{{#if junit}}" +
   "<table>" +
   "    <tbody>" +
   "        <tr>" +
@@ -77,6 +80,7 @@ const template =
   "        </tbody>" +
   "    </table>" +
   "</details>" +
+  "{{/if}}" +
   "{{/if}}";
 
 const buildCoverageMissingCoverageLines = (missing, fileUrl) => {
@@ -143,8 +147,14 @@ const buildJunitInfo = (junitData) => {
 };
 
 const getReport = (junitData, coverageData, repositoryUrl, templateContent) => {
-  const coverage = buildCoverageInfo(coverageData, repositoryUrl);
-  const junit = buildJunitInfo(junitData);
+  let coverage;
+  if (coverageData) {
+    coverage = buildCoverageInfo(coverageData, repositoryUrl);
+  }
+  let junit;
+  if (junitData) {
+    junit = buildJunitInfo(junitData);
+  }
 
   let render;
   if (templateContent) {

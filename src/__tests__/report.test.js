@@ -79,3 +79,20 @@ test("Test empty data", () => {
   const report = getReport({}, {}, "", template);
   expect(report).toBe("0");
 });
+
+test("Test coverage combined and junit null", () => {
+  const coverageContent = loadFile("data/coverage_combined.xml");
+  const coverageData = getCoverageData(coverageContent);
+  const junitContent = loadFile("data/junit_missing.xml");
+  const junitData = getJUnitData(junitContent);
+  const repositoryUrl =
+    "https://www.github.com/xportation/junit-coverage-report";
+
+  const reportExpected = loadFile("data/report_combined.html");
+  expect(getReport(junitData, coverageData, repositoryUrl)).toBe(reportExpected);
+});
+
+test("Test default report undefined data", () => {
+  const report = getReport(undefined, undefined, "");
+  expect(report).toBe("");
+});
