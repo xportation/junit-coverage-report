@@ -37856,6 +37856,14 @@ const parseClass = (c) => {
 };
 
 const parseLines = (lines) => {
+  if (typeof lines !== 'object') {
+    return {
+      stmts:  0,
+      missing: [],
+      totalMissing: 0,
+    }
+  }
+
   let stmts = lines.line.length;
   const missingLines = [];
   for (let i = 0; i < lines.line.length; i++) {
@@ -37973,6 +37981,7 @@ const urlJoin = __nccwpck_require__(3437);
 const _ = __nccwpck_require__(250);
 
 const template =
+  "{{#if coverage}}" +
   "<img alt=\"Coverage\" src=\"{{coverage.badge}}\" />" +
   "<br/>" +
   "<details>" +
@@ -38010,6 +38019,8 @@ const template =
   "    </table>" +
   "</details>" +
   "<br/> " +
+  "{{/if}}" +
+  "{{#if junit}}" +
   "<table>" +
   "    <tbody>" +
   "        <tr>" +
@@ -38047,6 +38058,7 @@ const template =
   "        </tbody>" +
   "    </table>" +
   "</details>" +
+  "{{/if}}" +
   "{{/if}}";
 
 const buildCoverageMissingCoverageLines = (missing, fileUrl) => {
@@ -38113,8 +38125,14 @@ const buildJunitInfo = (junitData) => {
 };
 
 const getReport = (junitData, coverageData, repositoryUrl, templateContent) => {
-  const coverage = buildCoverageInfo(coverageData, repositoryUrl);
-  const junit = buildJunitInfo(junitData);
+  let coverage;
+  if (coverageData) {
+    coverage = buildCoverageInfo(coverageData, repositoryUrl);
+  }
+  let junit;
+  if (junitData) {
+    junit = buildJunitInfo(junitData);
+  }
 
   let render;
   if (templateContent) {
