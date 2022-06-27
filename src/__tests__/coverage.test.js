@@ -61,3 +61,18 @@ test("Test invalid xml file result is null", () => {
   const coverageData = getCoverageData("Not a xml");
   expect(coverageData).toBeNull();
 });
+
+test("Test coverage files combined", () => {
+  const coverageContent = loadFile("data/coverage_combined.xml");
+  const coverageData = getCoverageData(coverageContent);
+
+  const total = {
+    name: "TOTAL",
+    stmts: 3672,
+    miss: 340,
+    cover: "91%",
+    percentage: 91,
+  };
+  expect(coverageData.total).toEqual(total);
+  expect(coverageData.coverage).toHaveLength(78);
+});

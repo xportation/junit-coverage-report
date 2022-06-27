@@ -91,6 +91,14 @@ const parseClass = (c) => {
 };
 
 const parseLines = (lines) => {
+  if (typeof lines !== 'object') {
+    return {
+      stmts:  0,
+      missing: [],
+      totalMissing: 0,
+    }
+  }
+
   let stmts = lines.line.length;
   const missingLines = [];
   for (let i = 0; i < lines.line.length; i++) {
