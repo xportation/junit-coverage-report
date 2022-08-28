@@ -167,6 +167,6 @@ The default template is below:
 {{/if}}
 ```
 
-## Alternative Action
+## Alternative GH Action
 This project was strongly inspired by the [Pytest Coverage Comment](https://github.com/MishaKav/pytest-coverage-comment)  
 It's a great alternative project. You should consider it 🖤.
