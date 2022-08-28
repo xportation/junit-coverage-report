@@ -1,5 +1,5 @@
 
-# JUnit Coverage Report
+# Pytest: JUnit Coverage Report
 
 ![licence](https://img.shields.io/github/license/xportation/junit-coverage-report) ![version](https://img.shields.io/github/package-json/v/xportation/junit-coverage-report)
 
